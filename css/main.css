@@ -1,26 +1,41 @@
 body{
   margin: 0 auto;
-
 }
+main{
+  display: flex;
+  justify-content: space-around;
+  flex-wrap: wrap;
+}
+main .playersButton{
+  display: flex;
+  flex-flow: column;
+}
+.inline-can{
+  display: flex;
+  flex-direction: row;
+}
+.inline-can section{
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+}
+
 #canvas{
-  background: rgba(147, 218, 230, 0.7);
+  background: rgba(255, 255, 255, 0.9);
   border-width: 35px;
   border-style: dotted;
   border-bottom: none;
   display: flex;
   justify-content: center;
   align-content: center;
-  transition: all 3s ease 0.8s;
+  transition: all 2s ease 0.5s;
   animation: 2s anim infinite;
 }
 #startG{
   color:whitesmoke;
   background: #f26822;
-  float: right;
   font-size: 1.5em;
-  margin-top: -40vw;
-  margin-left: 0;
-  margin-right: 10vw;
   width: 150px;
   height: 100px;
 }

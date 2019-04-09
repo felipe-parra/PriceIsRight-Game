@@ -38,20 +38,25 @@ var products = [
   {
     name: 'VINO TINTO PROTOS CRIANZA 2BT 750ML C/CAFETERA',
     price:1200,
-    img: './img/img_07.jpg',
+    img: './img/img_07.jpeg',
     store:'Bodegas Alianza'
   },
   {
     name: 'WHISKY JOHNNIE WALKER BLACK 12A 750ML C/2 VASOS',
     price:790,
-    img: './img/img_08.jpg',
+    img: './img/img_08.jpeg',
     store:'Bodegas Alianza'
   },
   {
     name: 'TEQUILA EL ESPOLON BLANCO C/SHOT CALAVERA 750ML',
     price:240,
-    img: './img/img_09.jpg',
+    img: './img/img_09.jpeg',
     store:'Bodegas Alianza'
+  },
+  {
+    name: 'Alimento para Perro Dog Chow Original Adulto Raza Pequeña 7.5 Kg',
+    price:374,
+    img: './img/img_10.jpg',
+    store:'Walmart'
   }
-
 ]

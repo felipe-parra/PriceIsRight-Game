@@ -11,13 +11,25 @@
   <header>
     <h1 hidden>The Price Is Right Game</h1>
   </header>
-  <canvas class="block" width="800" height="600" id="canvas"></canvas>
-  <br><button type="button" id="startG">Start</button>
-  <br>
- 
-  <audio controls>
+  <main>
+    <section class="inline-can">
+      <canvas class="block" width="800" height="600" id="canvas"></canvas>
+      <section>
+        <img max-width="100%" width="200px" src="./media/logo_en.png" alt="the price is right logo">
+        <button type="button" id="startG">Start</button>
+      </section>
+    </section>
+    <section class="playersButton">
+        <button type="button">1 Player</button>
+        <button type="button">2 Players</button>
+      </section> 
+  </main>
+
+  <!-- <audio controls autoplay loop>
       <source src="./media/lounge.mp3">
-    </audio>
+    </audio> -->
   <script src="./js/main.js"></script>
+  <script src="./js/data.js"></script>
+  <script src="./js/logic.js"></script>
 </body>
 </html>
