@@ -1,0 +1,56 @@
+body{
+  margin: 0 auto;
+
+}
+#canvas{
+  background: rgba(147, 218, 230, 0.7);
+  border-width: 35px;
+  border-style: dotted;
+  border-bottom: none;
+  display: flex;
+  justify-content: center;
+  align-content: center;
+  transition: all 3s ease 0.8s;
+  animation: 2s anim infinite;
+}
+#startG{
+  color:whitesmoke;
+  background: #f26822;
+  float: right;
+  font-size: 1.5em;
+  margin-top: -40vw;
+  margin-left: 0;
+  margin-right: 10vw;
+  width: 150px;
+  height: 100px;
+}
+
+@keyframes anim {
+  0%{
+    border-top-color: #f26822;
+    border-right-color: #f6eb16;
+    border-left-color: #cb2026;
+  
+  }
+  25%{
+    border-top-color: #cb2026;
+    border-right-color: #f26822;
+    border-left-color: #f6eb16;
+    
+  }
+  50%{
+    border-top-color: #f6eb16;
+    border-right-color: #cb2026;
+    border-left-color: #f26822;
+  }
+  75%{
+    border-top-color: #f26822;
+    border-right-color: #f6eb16;
+    border-left-color: #cb2026;
+  }
+  100%{
+    border-top-color: #f26822;
+    border-right-color: #f6eb16;
+    border-left-color: #cb2026;
+  }
+}
