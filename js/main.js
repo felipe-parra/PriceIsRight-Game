@@ -1,14 +1,12 @@
 // Project: VideoGame JS - The Price Is Right
+// Developed by Felipe Parra
 
+// GLOBAL VARIABLES
 const canvas = document.querySelector('canvas')
 const ctx = canvas.getContext('2d')
-
 let frames  = 0
 let turno   = 0
-// let active = false
-//let interval
 const soundPlayer = document.querySelector('source')
-
 const images = {
   logo:     './media/logo_en.png',
   wrong:    './media/wrong.png',
@@ -19,6 +17,8 @@ const sound = {
   lounge: './media/lounge.mp3',
   gaming: './media/soundtrack.mp3'
 }
+
+// HELPER FUNCTIONS
 const scores = (player) => {
   player.score++
 }
@@ -29,15 +29,12 @@ const gaming = (element,Product,startGame) => {
         if(e.keyCode == 37) {
           if (element.rndSort[0] === element.price) {
             console.log("ganaste")
+            
           }
           if(element.rndSort[1] === element.price) {
             console.log("perdiste")
             
           }
-          //alert("Right 37")
-          // element.draw_out()
-          // decision.draw()
-       
         }
         break
         case 39:
@@ -70,12 +67,8 @@ const validateAns = (key,correctSide) => {
     return "Wrong"
   }
 }
-// setTimeout(()=>{
-//   alert("Your browser does not support the HTML5 canvas tag.")
-// },5000)
 
 window.onload = function(){
-
 
 class Board{
   constructor(){
@@ -175,13 +168,21 @@ class Product {
     ctx.fillText("$ "+this.rndSort[1],this.incomeX+215,435,80,40)
   }
   draw_timing(frame){
-    if(frame%100 == 0) this.timing--
-    ctx.fillStyle = 'black'
+    if(frame%100 == 0) {
+      this.timing--
+      ctx.fillStyle = 'green'
+      ctx.stroke()
+    } else if(frame > 650){
+      ctx.fillStyle = 'red'
+      ctx.fill()
+    }
+    else{
+      ctx.fillStyle = 'green'
+      ctx.fill()
+    }
     ctx.beginPath()
     ctx.arc(690, 55, 50, 0, 2 * Math.PI)
-    ctx.fill()
-    ctx.stroke()
-    ctx.fillStyle = 'red'
+    ctx.fillStyle = 'white'
     ctx.font = '30px Arial'
     ctx.fillText(this.timing,680,62,40,40)
   }
@@ -203,23 +204,22 @@ class Decision{
       this.draw()
     }
   }
-  draw(){
-    // if(this.x >= this.limits[0] || this.y >= 300  - this.limits[1]/2){this.x = 400-this.limits[0]/2,this.y=300 -this.limits[1]/2}
-    // this.x+=5
-    // this.y+=5
-    //   if(this.decision == 'w'){
-    //   ctx.drawImage(this.wrong,this.x-this.limits[0],this.y-this.limits[1],this.limits[0],this.limits[1])
-    //   //ctx.drawImage(this.wrong,this.x,this.y,this.limits[0],this.limits[1])
-    //   //ctx.drawImage(this.wrong,400,300,320,265)
-    // }else if(this.decision == 'c'){
-    //   this.x+=5
-    //   this.y+=5
-    //   if(this.x >= 400 - this.limits[0]/2 || this.y >= 300  - this.limits[1]/2){this.x = 400-this.limits[0]/2,this.y=300 -this.limits[1]/2}
-    //   ctx.drawImage(this.correct,this.x-this.limits[0],this.y-this.limits[1],this.limits[0],this.limits[1])
-    // }
+  draw(turno = 50,decision){
+    if (turno == 0) {
+      turn = 50
+    } else if(turno == 1){
+      turno = 150
+    } else if(turno == 2){
+      turno = 300
+    }
+    if (decision == 'c') {
+      ctx.drawImage(this.correct, 20,turno,160,130)
+    } else{
+      ctx.drawImage(this.wrong, 20,turno,160,130)
+    }
   }
 }
-let decision = new Decision('w')
+let decision = new Decision('c')
 let board = new Board()
 let product = new Product(products[rnd(products.length)])
 
@@ -232,33 +232,27 @@ function update(){
   board.draw_start()
   product.draw()
   product.draw_timing(frames)
+  if(decision != undefined){ decision.draw()}
   frames++
-  
-  
 }
 function startGame(){
   setInterval(update,1000/60)
-  
 }
 document.getElementById('startG').onclick = function(){
-  // debugger
-  //ctx.clearRect(0,0,canvas.width, canvas.height)
-  //product.draw_out()
-  startGame()
-  document.getElementById('startG').innerText = "Nuevo"
-  product = new Product(products[rnd(products.length)])
-  gaming(product,Product,startGame)
-  
-}
-  // if(sendKey() == 37){
-  //   console.log("Correct")
-  //   startGame()
-  //   product = new Product(products[rnd(products.length)])
-    
-  // }
-  // if(sendKey() == 39){
-  //   startGame()
-  //   product = new Product(products[rnd(products.length)])
-
-  // }
+    startGame()
+    document.getElementById('startG').innerText = "Nuevo"
+    product = new Product(products[rnd(products.length)])
+    // gaming(product,Product,startGame)
+    // debugger
+    if(player1.turn < 3){
+      gaming(product,Product,startGame)
+      player1++
+    } else{
+      if (player2.turn < 3) {
+        gaming(product,Product,startGame)
+        player2++
+        
+      }
+    }
+  }
 }
