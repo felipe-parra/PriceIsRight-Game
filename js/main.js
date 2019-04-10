@@ -1,31 +1,52 @@
 // Project: VideoGame JS - The Price Is Right
-let frames = 0
-let active = false
+let frames  = 0
+let turno   = 0
+// let active = false
 //let interval
 const soundPlayer = document.querySelector('source')
+
 const images = {
-  logo: './media/logo_en.png',
+  logo:     './media/logo_en.png',
+  wrong:    './media/wrong.png',
+  correct:  './media/correct.png',
   backgroundSquare: './media/background.jpg'
 }
 const sound = {
   lounge: './media/lounge.mp3',
   gaming: './media/soundtrack.mp3'
 }
-const scores = (arr,player) => {
-  array = arr
+const scores = (player) => {
+  player.score++
 }
-const gaming = (positionRight,element) => {
+const gaming = (element,Product,startGame) => {
   document.addEventListener('keydown',e =>{
     switch(e.keyCode){
       case 37:
-        if(positionRight == 37) {
-          alert("Right 37")
-          element.draw_out()
-          return 'Right 37'
+        if(e.keyCode == 37) {
+          console.log(element)
+          if (element.rndSort[0] === element.price) console.log("ganaste")
+          if(element.rndSort[1] === element.price) console.log("perdiste")
+          //alert("Right 37")
+          // element.draw_out()
+          // decision.draw()
+          setTimeout(()=>{
+            element = new Product(products[rnd(products.length)])
+            startGame()
+          },1000)
         }
         break
-      case 39:
-        if(positionRight == 39) alert('Right 39')
+        case 39:
+        if(e.keyCode == 39) {
+          console.log(element)
+          if (element.rndSort[1] === element.price) console.log("ganaste")
+          if(element.rndSort[0] === element.price) console.log("perdiste")
+          //alert("Right 37")
+          // decision.draw()
+          setTimeout(()=>{
+            element = new Product(products[rnd(products.length)])
+            startGame()
+          },1000)
+        }
         break
     }
   })
@@ -47,8 +68,12 @@ const validateAns = (key,correctSide) => {
     return "Wrong"
   }
 }
+// setTimeout(()=>{
+//   alert("Your browser does not support the HTML5 canvas tag.")
+// },5000)
+
 window.onload = function(){
-  
+
 const canvas = document.querySelector('canvas')
 const ctx = canvas.getContext('2d')
 
@@ -58,6 +83,8 @@ class Board{
     this.y        = 0
     this.outLeft  = 0
     this.outRight = 0
+    this.inLeft  = -400
+    this.inRight = 800
     this.height   = canvas.height
     this.width    = canvas.width
     this.audio = new Audio()
@@ -75,7 +102,14 @@ class Board{
     }
   }
   draw(){
-    
+    ctx.drawImage(this.back,this.inRight,0,400,600)
+    ctx.drawImage(this.back,this.inLeft,0,400,600)
+    this.inRight  -=  5
+    this.inLeft   +=  5
+    if (this.inRight <= 400 && this.inLeft >=0) {
+      this.inRight  = 400
+      this.inLeft   = 0 
+    }
   }
   draw_start(){
     ctx.drawImage(this.back,this.outRight+400,0,400,600)
@@ -86,11 +120,11 @@ class Board{
       this.y = this.height
     }
     ctx.drawImage(this.img,(canvas.width/2)-175,this.y,350,350)
-    this.outLeft-=5
-    this.outRight+=5
+    this.outLeft  -=  5
+    this.outRight +=  5
     if(this.outLeft < -400 && this.outRight > 400){
       this.outRight = 400
-      this.outLeft = - 410
+      this.outLeft  = -410
     }
   }
 }
@@ -100,7 +134,7 @@ class Product {
     this.price      = arr.price.toFixed(2)
     this.fakePrice  = Number(arr.price * ((rndPrice(35)/100)+1)).toFixed(2)
     this.store      = arr.store
-    this.rndSort    = [this.price, this.fakePrice]
+    this.rndSort    = rnd(0.5) ? [this.price, this.fakePrice] : [this.fakePrice, this.price]
     this.incomey    = -760
     this.incomeX    = -340
     this.outcome    = canvas.height
@@ -133,18 +167,52 @@ class Product {
     // ctx.fillRect(250,410,100,40)
     ctx.fillRect(this.incomeX,410,100,40)
     ctx.fillStyle = 'white'
-    ctx.fillText("$ "+this.price,this.incomeX+15,435,100,40)
+    ctx.fillText("$ "+this.rndSort[0],this.incomeX+15,435,100,40)
 
     ctx.fillStyle = 'grey'
     ctx.fillRect(this.incomeX+200,410,100,40)
     ctx.fillStyle = 'white'
-    ctx.fillText("$ "+this.fakePrice,this.incomeX+215,435,100,40)
+    ctx.fillText("$ "+this.rndSort[1],this.incomeX+215,435,100,40)
   }
   draw_out(){
     ctx.clearRect(0,0,canvas.width, canvas.height)
     
   }
 }
+class Decision{
+  constructor(decision){
+    this.decision = decision
+    this.x      = 0
+    this.y      = 0
+    this.limits = [320,265]
+    this.wrong  = new Image()
+    this.wrong.src = images.wrong
+    this.wrong.onload = ()=>{
+      this.draw()
+    }
+    this.correct  = new Image()
+    this.correct.src = images.correct
+    this.correct.onload = ()=>{
+      this.draw()
+    }
+  }
+  draw(){
+    // if(this.x >= this.limits[0] || this.y >= 300  - this.limits[1]/2){this.x = 400-this.limits[0]/2,this.y=300 -this.limits[1]/2}
+    // this.x+=5
+    // this.y+=5
+    //   if(this.decision == 'w'){
+    //   ctx.drawImage(this.wrong,this.x-this.limits[0],this.y-this.limits[1],this.limits[0],this.limits[1])
+    //   //ctx.drawImage(this.wrong,this.x,this.y,this.limits[0],this.limits[1])
+    //   //ctx.drawImage(this.wrong,400,300,320,265)
+    // }else if(this.decision == 'c'){
+    //   this.x+=5
+    //   this.y+=5
+    //   if(this.x >= 400 - this.limits[0]/2 || this.y >= 300  - this.limits[1]/2){this.x = 400-this.limits[0]/2,this.y=300 -this.limits[1]/2}
+    //   ctx.drawImage(this.correct,this.x-this.limits[0],this.y-this.limits[1],this.limits[0],this.limits[1])
+    // }
+  }
+}
+let decision = new Decision('w')
 let board = new Board()
 let product = new Product(products[rnd(products.length)])
 
@@ -152,9 +220,8 @@ function update(){
   ctx.clearRect(0,0,canvas.width, canvas.height)
   board.draw_start()
   product.draw()
-  if(active == false){
-    active = true
-  }
+  frames++
+  
 }
 function startGame(){
   setInterval(update,1000/60)
@@ -162,11 +229,23 @@ function startGame(){
 }
 document.getElementById('startG').onclick = function(){
   // debugger
+  //ctx.clearRect(0,0,canvas.width, canvas.height)
+  //product.draw_out()
   startGame()
-  ctx.clearRect(0,0,canvas.width, canvas.height)
-  product.draw_out()
+  document.getElementById('startG').innerText = "Nuevo"
   product = new Product(products[rnd(products.length)])
-  gaming(37)
+  gaming(product,Product,startGame)
   
-  }
+}
+  // if(sendKey() == 37){
+  //   console.log("Correct")
+  //   startGame()
+  //   product = new Product(products[rnd(products.length)])
+    
+  // }
+  // if(sendKey() == 39){
+  //   startGame()
+  //   product = new Product(products[rnd(products.length)])
+
+  // }
 }
