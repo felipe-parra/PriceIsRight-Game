@@ -1,4 +1,8 @@
 // Project: VideoGame JS - The Price Is Right
+
+const canvas = document.querySelector('canvas')
+const ctx = canvas.getContext('2d')
+
 let frames  = 0
 let turno   = 0
 // let active = false
@@ -23,29 +27,27 @@ const gaming = (element,Product,startGame) => {
     switch(e.keyCode){
       case 37:
         if(e.keyCode == 37) {
-          console.log(element)
-          if (element.rndSort[0] === element.price) console.log("ganaste")
-          if(element.rndSort[1] === element.price) console.log("perdiste")
+          if (element.rndSort[0] === element.price) {
+            console.log("ganaste")
+          }
+          if(element.rndSort[1] === element.price) {
+            console.log("perdiste")
+            
+          }
           //alert("Right 37")
           // element.draw_out()
           // decision.draw()
-          setTimeout(()=>{
-            element = new Product(products[rnd(products.length)])
-            startGame()
-          },1000)
+       
         }
         break
         case 39:
         if(e.keyCode == 39) {
-          console.log(element)
-          if (element.rndSort[1] === element.price) console.log("ganaste")
-          if(element.rndSort[0] === element.price) console.log("perdiste")
-          //alert("Right 37")
-          // decision.draw()
-          setTimeout(()=>{
-            element = new Product(products[rnd(products.length)])
-            startGame()
-          },1000)
+          if (element.rndSort[1] === element.price){
+            console.log("ganaste")
+          }
+          if(element.rndSort[0] === element.price){
+            console.log("perdiste")
+          }
         }
         break
     }
@@ -74,8 +76,6 @@ const validateAns = (key,correctSide) => {
 
 window.onload = function(){
 
-const canvas = document.querySelector('canvas')
-const ctx = canvas.getContext('2d')
 
 class Board{
   constructor(){
@@ -89,7 +89,6 @@ class Board{
     this.width    = canvas.width
     this.audio = new Audio()
     this.audio.src = sound.lounge
-    this.audio.loop = true
     this.back = new Image()
     this.back.src   = images.backgroundSquare
     this.back.onload = () => {
@@ -137,6 +136,7 @@ class Product {
     this.rndSort    = rnd(0.5) ? [this.price, this.fakePrice] : [this.fakePrice, this.price]
     this.incomey    = -760
     this.incomeX    = -340
+    this.timing     = 10
     this.outcome    = canvas.height
     this.img        = new Image()
     this.img.src    =  arr.img
@@ -153,30 +153,37 @@ class Product {
     ctx.drawImage(this.img,250,this.incomey,300,350)
     
     ctx.fillStyle = '#f26822'
-    // ctx.fillRect(250,370,300,40)
     ctx.fillRect(this.incomeX,370,300,40)
-    // ctx.fillRect(this.incomeX,365,300,30)
-
     ctx.fillStyle = 'white'
     ctx.font = "20px Arial";
-    // ctx.fillText(this.name,this.incomeX,380,300,80)
-    // ctx.fillText(this.name,250,395,300,80)
     ctx.fillText(this.name,this.incomeX,395,300,80)
+    
+    ctx.fillStyle = 'blue'
+    ctx.fillRect(this.incomeX-2,15,95,40)
+    ctx.fillStyle = 'white'
+    ctx.font = "20px Arial";
+    ctx.fillText(this.store,this.incomeX+5,40,80,80)
 
     ctx.fillStyle = 'grey'
-    // ctx.fillRect(250,410,100,40)
     ctx.fillRect(this.incomeX,410,100,40)
     ctx.fillStyle = 'white'
-    ctx.fillText("$ "+this.rndSort[0],this.incomeX+15,435,100,40)
+    ctx.fillText("$ "+this.rndSort[0],this.incomeX+15,435,80,40)
 
     ctx.fillStyle = 'grey'
     ctx.fillRect(this.incomeX+200,410,100,40)
     ctx.fillStyle = 'white'
-    ctx.fillText("$ "+this.rndSort[1],this.incomeX+215,435,100,40)
+    ctx.fillText("$ "+this.rndSort[1],this.incomeX+215,435,80,40)
   }
-  draw_out(){
-    ctx.clearRect(0,0,canvas.width, canvas.height)
-    
+  draw_timing(frame){
+    if(frame%100 == 0) this.timing--
+    ctx.fillStyle = 'black'
+    ctx.beginPath()
+    ctx.arc(690, 55, 50, 0, 2 * Math.PI)
+    ctx.fill()
+    ctx.stroke()
+    ctx.fillStyle = 'red'
+    ctx.font = '30px Arial'
+    ctx.fillText(this.timing,680,62,40,40)
   }
 }
 class Decision{
@@ -217,10 +224,16 @@ let board = new Board()
 let product = new Product(products[rnd(products.length)])
 
 function update(){
+  if(frames == 1000) {
+    frames = 0
+    product = new Product(products[rnd(products.length)])
+  }
   ctx.clearRect(0,0,canvas.width, canvas.height)
   board.draw_start()
   product.draw()
+  product.draw_timing(frames)
   frames++
+  
   
 }
 function startGame(){
