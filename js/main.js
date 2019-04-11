@@ -18,6 +18,8 @@ const sound = {
   gaming: './media/soundtrack.mp3'
 }
 
+let participacion = false;
+
 // HELPER FUNCTIONS
 const scores = (player) => {
   player.score += 1
@@ -25,39 +27,7 @@ const scores = (player) => {
 const turns = (player) =>{
   player.turn++
 }
-// const gaming = (element,Product,startGame,decision) => {
-/*const gaming = (element,choice) => {
-  document.addEventListener('keydown',e =>{
-    switch(e.keyCode){
-      case 37:
-        if(e.keyCode == 37) {
-          if (element.rndSort[0] === element.price) {
-            console.log("ganaste")
-            return 'c'
-          }
-          if(element.rndSort[1] === element.price) {
-            console.log("perdiste")
-            return 'w'
-          }
-        }
-        break
-        case 39:
-        if(e.keyCode == 39) {
-          if (element.rndSort[1] === element.price){
-            console.log("ganaste")
-            return 'c'
-            
-          }
-          if(element.rndSort[0] === element.price){
-            console.log("perdiste")
-            return 'w'
-          }
-        }
-        break
-    }
-  })
-}
-*/
+
 const rnd = (range) => {
   let value = Math.floor(Math.random()*range)
   return value
@@ -126,6 +96,16 @@ class Board{
       this.outLeft  = -410
     }
   }
+  out(){
+    ctx.drawImage(this.back,0,0,400,600)
+    ctx.drawImage(this.back,0,0,400,600)
+    // this.inRight  -=  5
+    // this.inLeft   +=  5
+    // if (this.inRight <= 400 && this.inLeft >=0) {
+    //   this.inRight  = 400
+    //   this.inLeft   = 0 
+    // }
+  }
 }
 class Product {
   constructor(arr){
@@ -174,39 +154,29 @@ class Product {
     ctx.fillStyle = 'white'
     ctx.fillText("$ "+this.rndSort[1],this.incomeX+215,435,80,40)
   }
-  draw_timing(frame){
-    // if(frame%100 == 0) {
-    //   this.timing--
-    //   ctx.fillStyle = 'green'
-    //   ctx.stroke()
-    // } else if(frame > 650){
-    //   ctx.fillStyle = 'red'
-    //   ctx.fill()
-    // }
-    // else{
-    //   ctx.fillStyle = 'green'
-    //   ctx.fill()
-    // }
-    // ctx.beginPath()
-    // ctx.arc(690, 55, 50, 0, 2 * Math.PI)
-    // ctx.fillStyle = 'white'
-    // ctx.font = '30px Arial'
-    // ctx.fillText(this.timing,680,62,40,40)
-  }
 }
 
 let decision  = new Decision()
 let board     = new Board()
 let product   = new Product(products[rnd(products.length)])
 let timer     = new Timer()
+let out       = new Out()
+
 function update(){
   if(frames == 1000) {
     frames = 0
     product = new Product(products[rnd(products.length)])
+    turno++
+    player1.turn = turno
+    player2.turn = turno
   }
   ctx.clearRect(0,0,canvas.width, canvas.height)
   board.draw_start()
   product.draw()
+  decision.draw_correct_p1(player1.turn)
+  decision.draw_wrong_p1(player1.turn)
+  decision.draw_correct_p2(player2.turn)
+  decision.draw_wrong_p2(player2.turn)
   timer.draw(frames)
   decision.draw()
   frames++
@@ -214,6 +184,7 @@ function update(){
 function startGame(){
   setInterval(update,1000/60)
 }
+document.addEventListener('keypress', e =>{if(e.keyCode == 32){startGame()} })
 document.getElementById('startG').onclick = function(){
     startGame()
     function newProduct(){
@@ -223,44 +194,81 @@ document.getElementById('startG').onclick = function(){
     document.getElementById('startG').innerText = "Nuevo"
     console.log(player1);
     document.addEventListener('keydown',e =>{
-      switch(e.keyCode){
+      console.log(e);
+      if(player1.turn >= 3 || player2.turn >= 3) {
+        out.draw()
+        board.draw()
+      }
+      switch(e.keyCode){  
         case 37:
           if(e.keyCode == 37) {
             if (product.rndSort[0] === product.price) {
-              console.log("ganaste")
-              decision.draw_correct_p1(player1.turn)
+              frames = 999
+              console.log("win")
+              player1.turn++
+              console.log(player.turn + " < ");
+              if (player.turn == 1) {
+                decision.draw_correct_p1(player1.turn)
+              }
+              else if (player.turn == 2) {
+                decision.draw_correct_p1(player1.turn)
+              } else if(player1.turn == 3){
+                decision.draw_correct_p1(player1.turn)
+              }
             }
             if(product.rndSort[1] === product.price) {
-              console.log("perdiste")
-              decision.draw_wrong_p1(player1.turn)
+              frames = 999
+              participacion = false
+              console.log("lose")
+              player1.turn++
+              console.log(player1.turn + " < ");
+              if (player1.turn == 1) {
+                decision.draw_wrong_p1(player1.turn)
+              }
+              else if (player1.turn == 2) {
+                decision.draw_wrong_p1(player1.turn)
+              } else if(player1.turn == 3){
+                decision.draw_wrong_p1(player1.turn)
+              }
             }
           }
           break
           case 39:
           if(e.keyCode == 39) {
             if (product.rndSort[1] === product.price){
+              frames = 999
+              participacion = false
               console.log("ganaste")
-              decision.draw_correct_p1(player1.turn)
+              player1.turn++
+              console.log(player1.turn + " < ");
+              if (player1.turn == 1) {
+                decision.draw_correct_p1(player1.turn)
+              }
+              else if (player1.turn == 2) {
+                decision.draw_correct_p1(player1.turn)
+              } else if(player1.turn == 3){
+                decision.draw_correct_p1(player1.turn)
+              }
             }
             if(product.rndSort[0] === product.price){
+              frames = 999
+              participacion = false 
               console.log("perdiste")
-              decision.draw_wrong_p1(player1.turn)
+              player1.turn++
+              console.log(player1.turn + " < ");
+              if (player.turn == 1) {
+                decision.draw_wrong_p1(player1.turn)
+              }
+              else if (player1.turn == 2) {
+                decision.draw_wrong_p1(player1.turn)
+              } else if(player1.turn == 3){
+                decision.draw_wrong_p1(player1.turn)
+              }
 
             }
           }
           break
       }
     })
-    if(player1.turn <= 3){
-      player1.turn++
-      // console.log('player'+player1.turn);
-      // if (gaming(product) == 'c') {
-      //   console.log('primer if');
-      //   decision.draw_correct_p1(player1.turn)
-      // }else{
-      //   decision.draw_wrong_p1(player1.turn)
-      // }
-      // console.log(player1.turn,decision);
-    }
   }
 }
