@@ -58,5 +58,17 @@ var products = [
     price:374,
     img: './img/img_10.jpg',
     store:'Walmart'
+  },
+  {
+    name: 'Café soluble Nescafé Clásico 10% más producto 440 g',
+    price:136,
+    img: './img/img_11.jpg',
+    store:'Walmart'
+  },
+  {
+    name: 'Jabón de barra líquido Pinol para ropa delicada 1 l',
+    price:19.5,
+    img: './img/img_12.jpg',
+    store:'Walmart'
   }
 ]

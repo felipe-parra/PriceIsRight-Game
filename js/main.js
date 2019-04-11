@@ -20,20 +20,24 @@ const sound = {
 
 // HELPER FUNCTIONS
 const scores = (player) => {
-  player.score++
+  player.score += 1
 }
-const gaming = (element,Product,startGame) => {
+const turns = (player) =>{
+  player.turn++
+}
+// const gaming = (element,Product,startGame,decision) => {
+/*const gaming = (element,choice) => {
   document.addEventListener('keydown',e =>{
     switch(e.keyCode){
       case 37:
         if(e.keyCode == 37) {
           if (element.rndSort[0] === element.price) {
             console.log("ganaste")
-            
+            return 'c'
           }
           if(element.rndSort[1] === element.price) {
             console.log("perdiste")
-            
+            return 'w'
           }
         }
         break
@@ -41,16 +45,19 @@ const gaming = (element,Product,startGame) => {
         if(e.keyCode == 39) {
           if (element.rndSort[1] === element.price){
             console.log("ganaste")
+            return 'c'
+            
           }
           if(element.rndSort[0] === element.price){
             console.log("perdiste")
+            return 'w'
           }
         }
         break
     }
   })
 }
-
+*/
 const rnd = (range) => {
   let value = Math.floor(Math.random()*range)
   return value
@@ -122,7 +129,7 @@ class Board{
 }
 class Product {
   constructor(arr){
-    this.name       = arr.name
+    this.name       = arr.name.toUpperCase()
     this.price      = arr.price.toFixed(2)
     this.fakePrice  = Number(arr.price * ((rndPrice(35)/100)+1)).toFixed(2)
     this.store      = arr.store
@@ -168,61 +175,30 @@ class Product {
     ctx.fillText("$ "+this.rndSort[1],this.incomeX+215,435,80,40)
   }
   draw_timing(frame){
-    if(frame%100 == 0) {
-      this.timing--
-      ctx.fillStyle = 'green'
-      ctx.stroke()
-    } else if(frame > 650){
-      ctx.fillStyle = 'red'
-      ctx.fill()
-    }
-    else{
-      ctx.fillStyle = 'green'
-      ctx.fill()
-    }
-    ctx.beginPath()
-    ctx.arc(690, 55, 50, 0, 2 * Math.PI)
-    ctx.fillStyle = 'white'
-    ctx.font = '30px Arial'
-    ctx.fillText(this.timing,680,62,40,40)
+    // if(frame%100 == 0) {
+    //   this.timing--
+    //   ctx.fillStyle = 'green'
+    //   ctx.stroke()
+    // } else if(frame > 650){
+    //   ctx.fillStyle = 'red'
+    //   ctx.fill()
+    // }
+    // else{
+    //   ctx.fillStyle = 'green'
+    //   ctx.fill()
+    // }
+    // ctx.beginPath()
+    // ctx.arc(690, 55, 50, 0, 2 * Math.PI)
+    // ctx.fillStyle = 'white'
+    // ctx.font = '30px Arial'
+    // ctx.fillText(this.timing,680,62,40,40)
   }
 }
-class Decision{
-  constructor(decision){
-    this.decision = decision
-    this.x      = 0
-    this.y      = 0
-    this.limits = [320,265]
-    this.wrong  = new Image()
-    this.wrong.src = images.wrong
-    this.wrong.onload = ()=>{
-      this.draw()
-    }
-    this.correct  = new Image()
-    this.correct.src = images.correct
-    this.correct.onload = ()=>{
-      this.draw()
-    }
-  }
-  draw(turno = 50,decision){
-    if (turno == 0) {
-      turn = 50
-    } else if(turno == 1){
-      turno = 150
-    } else if(turno == 2){
-      turno = 300
-    }
-    if (decision == 'c') {
-      ctx.drawImage(this.correct, 20,turno,160,130)
-    } else{
-      ctx.drawImage(this.wrong, 20,turno,160,130)
-    }
-  }
-}
-let decision = new Decision('c')
-let board = new Board()
-let product = new Product(products[rnd(products.length)])
 
+let decision  = new Decision()
+let board     = new Board()
+let product   = new Product(products[rnd(products.length)])
+let timer     = new Timer()
 function update(){
   if(frames == 1000) {
     frames = 0
@@ -231,8 +207,8 @@ function update(){
   ctx.clearRect(0,0,canvas.width, canvas.height)
   board.draw_start()
   product.draw()
-  product.draw_timing(frames)
-  if(decision != undefined){ decision.draw()}
+  timer.draw(frames)
+  decision.draw()
   frames++
 }
 function startGame(){
@@ -240,19 +216,51 @@ function startGame(){
 }
 document.getElementById('startG').onclick = function(){
     startGame()
+    function newProduct(){
+      product = new Product(products[rnd(products.length)])
+      return product
+    }
     document.getElementById('startG').innerText = "Nuevo"
-    product = new Product(products[rnd(products.length)])
-    // gaming(product,Product,startGame)
-    // debugger
-    if(player1.turn < 3){
-      gaming(product,Product,startGame)
-      player1++
-    } else{
-      if (player2.turn < 3) {
-        gaming(product,Product,startGame)
-        player2++
-        
+    console.log(player1);
+    document.addEventListener('keydown',e =>{
+      switch(e.keyCode){
+        case 37:
+          if(e.keyCode == 37) {
+            if (product.rndSort[0] === product.price) {
+              console.log("ganaste")
+              decision.draw_correct_p1(player1.turn)
+            }
+            if(product.rndSort[1] === product.price) {
+              console.log("perdiste")
+              decision.draw_wrong_p1(player1.turn)
+            }
+          }
+          break
+          case 39:
+          if(e.keyCode == 39) {
+            if (product.rndSort[1] === product.price){
+              console.log("ganaste")
+              decision.draw_correct_p1(player1.turn)
+            }
+            if(product.rndSort[0] === product.price){
+              console.log("perdiste")
+              decision.draw_wrong_p1(player1.turn)
+
+            }
+          }
+          break
       }
+    })
+    if(player1.turn <= 3){
+      player1.turn++
+      // console.log('player'+player1.turn);
+      // if (gaming(product) == 'c') {
+      //   console.log('primer if');
+      //   decision.draw_correct_p1(player1.turn)
+      // }else{
+      //   decision.draw_wrong_p1(player1.turn)
+      // }
+      // console.log(player1.turn,decision);
     }
   }
 }
