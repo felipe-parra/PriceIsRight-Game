@@ -50,31 +50,41 @@ window.onload = function(){
 
 class Board{
   constructor(){
-    this.x        = 0 
-    this.y        = 0
-    this.outLeft  = 0
-    this.outRight = 0
-    this.inLeft  = -400
-    this.inRight = 800
-    this.height   = canvas.height
-    this.width    = canvas.width
-    this.audio = new Audio()
-    this.audio.src = sound.lounge
-    this.back = new Image()
-    this.back.src   = images.backgroundSquare
+    this.x           = 0 
+    this.y           = 0
+    this.outLeft     = 0
+    this.outRight    = 0
+    this.inLeft      = -400
+    this.inRight     = 800
+    this.height      = canvas.height
+    this.width       = canvas.width
+    this.audio       = new Audio()
+    this.audio.src   = sound.lounge
+    this.back        = new Image()
+    this.back.src    = images.backgroundSquare
     this.back.onload = () => {
       this.draw_start()
     }
-    this.img      = new Image()
-    this.img.src  = images.logo
+    this.img        = new Image()
+    this.img.src    = images.logo
     this.img.onload = () => {
       this.draw_start()
     }
+    this.win        = new Image()
+    this.win.src    = images.winner
+    this.win.onload = () =>{
+      this.draw()
+    }
   }
-  draw(){
+  draw(winner){
     ctx.drawImage(this.back,this.inRight,0,400,600)
     ctx.drawImage(this.back,this.inLeft,0,400,600)
     ctx.drawImage(this.img,(canvas.width/2)-125,10,250,250)  
+    ctx.fillStyle = 'white'
+    ctx.fillRect((canvas.width/2)-150,this.inRight-130,300,150)
+    ctx.fillStyle = 'black'
+    ctx.fillText(winner,350,this.inRight,100,100)
+    ctx.drawImage(this.win,(canvas.width/2)-115,270,200,112)
     this.inRight  -=  5
     this.inLeft   +=  5
     if (this.inRight <= 400 && this.inLeft >=0) {
@@ -174,7 +184,7 @@ function update(){
   }
   ctx.clearRect(0,0,canvas.width, canvas.height)
   board.draw_start()
-  product.draw()
+  
   if(player1.answer[0] != 0){
     decision.draw_p1(1,player1.answer[0])
   }
@@ -195,13 +205,15 @@ function update(){
   }
   if(player1.turn >= 3 || player2.turn >= 3) {
     ctx.clearRect(0,0,canvas.width, canvas.height)
-    out.draw()
-    board.draw()
+    
     // decision.draw(true)
     if(player1.score > player2.score){
-
+      board.draw('Player 1')
+    }else{
+      board.draw('Player 2')
     }
   }else{
+    product.draw()
     timer.draw(frames)
     decision.draw(false)
   }
