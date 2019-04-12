@@ -97,8 +97,7 @@ class Board{
     }
   }
   out(){
-    ctx.drawImage(this.back,0,0,400,600)
-    ctx.drawImage(this.back,0,0,400,600)
+    ctx.clearRect(0,0,canvas.width, canvas.height)
     // this.inRight  -=  5
     // this.inLeft   +=  5
     // if (this.inRight <= 400 && this.inLeft >=0) {
@@ -173,8 +172,8 @@ function update(){
   ctx.clearRect(0,0,canvas.width, canvas.height)
   board.draw_start()
   product.draw()
-  decision.draw_correct_p1(player1.turn)
-  decision.draw_wrong_p1(player1.turn)
+  // decision.draw_correct_p1(player1.turn)
+  // decision.draw_wrong_p1(player1.turn)
   decision.draw_correct_p2(player2.turn)
   decision.draw_wrong_p2(player2.turn)
   timer.draw(frames)
@@ -207,14 +206,7 @@ document.getElementById('startG').onclick = function(){
               console.log("win")
               player1.turn++
               console.log(player.turn + " < ");
-              if (player.turn == 1) {
-                decision.draw_correct_p1(player1.turn)
-              }
-              else if (player.turn == 2) {
-                decision.draw_correct_p1(player1.turn)
-              } else if(player1.turn == 3){
-                decision.draw_correct_p1(player1.turn)
-              }
+              decision.draw_p1(player1.turn,'c')
             }
             if(product.rndSort[1] === product.price) {
               frames = 999
@@ -222,14 +214,15 @@ document.getElementById('startG').onclick = function(){
               console.log("lose")
               player1.turn++
               console.log(player1.turn + " < ");
-              if (player1.turn == 1) {
-                decision.draw_wrong_p1(player1.turn)
-              }
-              else if (player1.turn == 2) {
-                decision.draw_wrong_p1(player1.turn)
-              } else if(player1.turn == 3){
-                decision.draw_wrong_p1(player1.turn)
-              }
+              decision.draw_p1(player1.turn,'w')
+              // if (player1.turn == 1) {
+              //   decision.draw_wrong_p1(player1.turn)
+              // }
+              // else if (player1.turn == 2) {
+              //   decision.draw_wrong_p1(player1.turn)
+              // } else if(player1.turn == 3){
+              //   decision.draw_wrong_p1(player1.turn)
+              // }
             }
           }
           break
@@ -241,14 +234,15 @@ document.getElementById('startG').onclick = function(){
               console.log("ganaste")
               player1.turn++
               console.log(player1.turn + " < ");
-              if (player1.turn == 1) {
-                decision.draw_correct_p1(player1.turn)
-              }
-              else if (player1.turn == 2) {
-                decision.draw_correct_p1(player1.turn)
-              } else if(player1.turn == 3){
-                decision.draw_correct_p1(player1.turn)
-              }
+              decision.draw_p1(player1.turn,'c')
+              // if (player1.turn == 1) {
+              //   decision.draw_correct_p1(player1.turn)
+              // }
+              // else if (player1.turn == 2) {
+              //   decision.draw_correct_p1(player1.turn)
+              // } else if(player1.turn == 3){
+              //   decision.draw_correct_p1(player1.turn)
+              // }
             }
             if(product.rndSort[0] === product.price){
               frames = 999
@@ -256,14 +250,15 @@ document.getElementById('startG').onclick = function(){
               console.log("perdiste")
               player1.turn++
               console.log(player1.turn + " < ");
-              if (player.turn == 1) {
-                decision.draw_wrong_p1(player1.turn)
-              }
-              else if (player1.turn == 2) {
-                decision.draw_wrong_p1(player1.turn)
-              } else if(player1.turn == 3){
-                decision.draw_wrong_p1(player1.turn)
-              }
+              decision.draw_p1(player1.turn,'w')
+              // if (player.turn == 1) {
+              //   decision.draw_wrong_p1(player1.turn)
+              // }
+              // else if (player1.turn == 2) {
+              //   decision.draw_wrong_p1(player1.turn)
+              // } else if(player1.turn == 3){
+              //   decision.draw_wrong_p1(player1.turn)
+              // }
 
             }
           }
