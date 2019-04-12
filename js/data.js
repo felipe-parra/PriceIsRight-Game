@@ -74,7 +74,7 @@ var products = [
   {
     name: 'Alimento líquido Natures Heart de almendra sin azúcar 946 ml',
     price:38.5,
-    img: './img/img_13.png',
+    img: './img/img_13.jpg',
     store:'Maxi Super'
   },
   

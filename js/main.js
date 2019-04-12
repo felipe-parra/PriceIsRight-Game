@@ -30,6 +30,7 @@ const turns = (player) =>{
 }
 
 const rnd = (range) => {
+  
   let value = Math.floor(Math.random()*range)
   return value
 }
@@ -125,7 +126,7 @@ class Product {
     this.price      = arr.price.toFixed(2)
     this.fakePrice  = Number(arr.price * ((rndPrice(35)/100)+1)).toFixed(2)
     this.store      = arr.store
-    this.rndSort    = rnd(0.5) ? [this.price, this.fakePrice] : [this.fakePrice, this.price]
+    this.rndSort    = rnd(2) ? [this.price, this.fakePrice] : [this.fakePrice, this.price]
     this.incomey    = -760
     this.incomeX    = -340
     this.timing     = 10
