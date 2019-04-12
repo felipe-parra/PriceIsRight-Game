@@ -232,7 +232,6 @@ function update(){
 function startGame(){
   setInterval(update,1000/60)
 }
-document.addEventListener('keypress', e =>{if(e.keyCode == 32){startGame()} })
 document.getElementById('startG').onclick = function(){
     startGame()
     function newProduct(){
