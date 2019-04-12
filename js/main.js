@@ -81,10 +81,11 @@ class Board{
     ctx.drawImage(this.back,this.inLeft,0,400,600)
     ctx.drawImage(this.img,(canvas.width/2)-125,10,250,250)  
     ctx.fillStyle = 'white'
-    ctx.fillRect((canvas.width/2)-150,this.inRight-130,300,150)
+    ctx.fillRect((canvas.width/2)-160,this.inRight-130,300,150)
     ctx.fillStyle = 'black'
-    ctx.fillText(winner,350,this.inRight,100,100)
-    ctx.drawImage(this.win,(canvas.width/2)-115,270,200,112)
+    ctx.font = 'Bold 25px Arial'
+    ctx.fillText(winner,330,this.inRight,100,100)
+    ctx.drawImage(this.win,(canvas.width/2)-120,270,200,112)
     this.inRight  -=  5
     this.inLeft   +=  5
     if (this.inRight <= 400 && this.inLeft >=0) {

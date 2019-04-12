@@ -70,5 +70,26 @@ var products = [
     price:19.5,
     img: './img/img_12.jpg',
     store:'Walmart'
-  }
+  },
+  {
+    name: 'Alimento líquido Natures Heart de almendra sin azúcar 946 ml',
+    price:38.5,
+    img: './img/img_14.jpg',
+    store:'Maxi Super'
+  },
+  
+  {
+    name: 'Natures Heart Fruits & Chocolate Mix 35g',
+    price:15.00,
+    img: './img/img_14.png',
+    store:'Maxi Super'
+  },
+  {
+    name: 'Natures Heart Te Verde Detox 20PZ',
+    price: 49.00,
+    img: './img/img_15.png',
+    store:'Maxi Super'
+  },
+
+  
 ]
