@@ -4,6 +4,14 @@ class Player{
     this.turn   = 0
     this.score  = 0
     this.answer = [0,0,0]
+    this.win    = new Image()
+    this.win.src = './media/winner.png'
+    this.win.onload = () => {
+      this.draw()
+    }
+  }
+  draw(){
+    ctx.drawImage(this.win,50,80,160,90)
   }
 }
 let player1 = new Player("Sth")
@@ -29,13 +37,18 @@ class Decision{
       this.draw_p2()
     }
   }
-  draw(turno,decision){
-    ctx.strokeRect(45,5,170,430)
-    ctx.font = "20px Arial"
-    ctx.fillStyle = "Black"
-    ctx.fillText("Player 1",55,25,80)
-    ctx.fillText("Player 2",55,265,80)
-
+  draw(end){
+    if (end == true) {
+      ctx.fillStyle = 'white'
+      ctx.fillRect(45,5,170,460)
+    } else{
+      ctx.strokeRect(45,5,170,460)
+      ctx.font = "20px Arial"
+      ctx.fillStyle = "Black"
+      ctx.fillText("Player 1",55,25,80)
+      ctx.fillText("Player 2",55,265,80)
+      
+    }
   }
   draw_p1(turno,decision){
     if (turno == 1 && decision == 'c') {

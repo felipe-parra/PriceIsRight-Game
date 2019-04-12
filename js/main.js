@@ -11,6 +11,7 @@ const images = {
   logo:     './media/logo_en.png',
   wrong:    './media/wrong.png',
   correct:  './media/correct.png',
+  winner:  './media/winner.png',
   backgroundSquare: './media/background.jpg'
 }
 const sound = {
@@ -73,6 +74,7 @@ class Board{
   draw(){
     ctx.drawImage(this.back,this.inRight,0,400,600)
     ctx.drawImage(this.back,this.inLeft,0,400,600)
+    ctx.drawImage(this.img,(canvas.width/2)-125,10,250,250)  
     this.inRight  -=  5
     this.inLeft   +=  5
     if (this.inRight <= 400 && this.inLeft >=0) {
@@ -162,6 +164,7 @@ let timer     = new Timer()
 let out       = new Out()
 
 function update(){
+  player1.draw()
   if(frames == 1000) {
     frames = 0
     product = new Product(products[rnd(products.length)])
@@ -194,9 +197,14 @@ function update(){
     ctx.clearRect(0,0,canvas.width, canvas.height)
     out.draw()
     board.draw()
+    // decision.draw(true)
+    if(player1.score > player2.score){
+
+    }
+  }else{
+    timer.draw(frames)
+    decision.draw(false)
   }
-  timer.draw(frames)
-  decision.draw()
   frames++
 }
 function startGame(){
@@ -214,6 +222,9 @@ document.getElementById('startG').onclick = function(){
     document.addEventListener('keydown',e =>{
       console.log(e);
       
+      if (player2.turn >=3 || player1.turn >=3) {
+        console.log('Game Over');
+      } else{
       switch(e.keyCode){  
         case 37:
           if(e.keyCode == 37) {
@@ -222,7 +233,7 @@ document.getElementById('startG').onclick = function(){
               console.log("win")
               player1.answer[player1.turn] = 'c'
               player1.turn++
-              console.log(player.turn + " < ");
+              player1.score++
             }
             if(product.rndSort[1] === product.price) {
               frames = 999
@@ -242,6 +253,7 @@ document.getElementById('startG').onclick = function(){
               console.log("ganaste")
               player1.answer[player1.turn] = 'c'
               player1.turn++
+              player1.score++
             }
             if(product.rndSort[0] === product.price){
               frames = 999
@@ -260,7 +272,7 @@ document.getElementById('startG').onclick = function(){
               frames = 999
               player1.answer[player2.turn] = 'c'
               player1.turn++
-              
+              player2.score++
             }
             if(product.rndSort[1] === product.price) {
               frames = 999
@@ -279,7 +291,7 @@ document.getElementById('startG').onclick = function(){
               console.log("win")
               player2.answer[player2.turn] = 'c'
               player2.turn++
-              console.log(player.turn + " < ");
+              player2.score++
             }
             if(product.rndSort[0] === product.price) {
               frames = 999
@@ -292,6 +304,7 @@ document.getElementById('startG').onclick = function(){
           }
           break
       }
+    }
     })
   }
 }
