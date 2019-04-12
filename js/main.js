@@ -210,9 +210,18 @@ function update(){
     // decision.draw(true)
     if(player1.score > player2.score){
       board.draw('Player 1')
-    }else{
+      frames = 500
+    }else if(player2.score > player1.score){
       board.draw('Player 2')
+      frames = 500
+    } else{
+      board.draw(`It's a TIE`)
+      frames = 500
     }
+    frames++
+    // if (frames >= 500) {
+    //   board.draw_start()
+    // }
   }else{
     product.draw()
     timer.draw(frames)
