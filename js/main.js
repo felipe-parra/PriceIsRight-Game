@@ -172,10 +172,29 @@ function update(){
   ctx.clearRect(0,0,canvas.width, canvas.height)
   board.draw_start()
   product.draw()
-  // decision.draw_correct_p1(player1.turn)
-  // decision.draw_wrong_p1(player1.turn)
-  decision.draw_correct_p2(player2.turn)
-  decision.draw_wrong_p2(player2.turn)
+  if(player1.answer[0] != 0){
+    decision.draw_p1(1,player1.answer[0])
+  }
+  if(player1.answer[1] != 0){
+    decision.draw_p1(2,player1.answer[1])
+  }
+  if(player1.answer[2] != 0){
+    decision.draw_p1(3,player1.answer[2])
+  }
+  if(player2.answer[0] != 0){
+    decision.draw_p2(1,player2.answer[0])
+  }
+  if(player2.answer[1] != 0){
+    decision.draw_p2(2,player2.answer[1])
+  }
+  if(player2.answer[2] != 0){
+    decision.draw_p2(3,player2.answer[2])
+  }
+  if(player1.turn >= 3 || player2.turn >= 3) {
+    ctx.clearRect(0,0,canvas.width, canvas.height)
+    out.draw()
+    board.draw()
+  }
   timer.draw(frames)
   decision.draw()
   frames++
@@ -194,35 +213,24 @@ document.getElementById('startG').onclick = function(){
     console.log(player1);
     document.addEventListener('keydown',e =>{
       console.log(e);
-      if(player1.turn >= 3 || player2.turn >= 3) {
-        out.draw()
-        board.draw()
-      }
+      
       switch(e.keyCode){  
         case 37:
           if(e.keyCode == 37) {
             if (product.rndSort[0] === product.price) {
               frames = 999
               console.log("win")
+              player1.answer[player1.turn] = 'c'
               player1.turn++
               console.log(player.turn + " < ");
-              decision.draw_p1(player1.turn,'c')
             }
             if(product.rndSort[1] === product.price) {
               frames = 999
               participacion = false
               console.log("lose")
+              player1.answer[player1.turn] = 'w'
               player1.turn++
               console.log(player1.turn + " < ");
-              decision.draw_p1(player1.turn,'w')
-              // if (player1.turn == 1) {
-              //   decision.draw_wrong_p1(player1.turn)
-              // }
-              // else if (player1.turn == 2) {
-              //   decision.draw_wrong_p1(player1.turn)
-              // } else if(player1.turn == 3){
-              //   decision.draw_wrong_p1(player1.turn)
-              // }
             }
           }
           break
@@ -232,34 +240,54 @@ document.getElementById('startG').onclick = function(){
               frames = 999
               participacion = false
               console.log("ganaste")
+              player1.answer[player1.turn] = 'c'
               player1.turn++
-              console.log(player1.turn + " < ");
-              decision.draw_p1(player1.turn,'c')
-              // if (player1.turn == 1) {
-              //   decision.draw_correct_p1(player1.turn)
-              // }
-              // else if (player1.turn == 2) {
-              //   decision.draw_correct_p1(player1.turn)
-              // } else if(player1.turn == 3){
-              //   decision.draw_correct_p1(player1.turn)
-              // }
             }
             if(product.rndSort[0] === product.price){
               frames = 999
               participacion = false 
               console.log("perdiste")
+              player1.answer[player1.turn] = 'w'
               player1.turn++
               console.log(player1.turn + " < ");
-              decision.draw_p1(player1.turn,'w')
-              // if (player.turn == 1) {
-              //   decision.draw_wrong_p1(player1.turn)
-              // }
-              // else if (player1.turn == 2) {
-              //   decision.draw_wrong_p1(player1.turn)
-              // } else if(player1.turn == 3){
-              //   decision.draw_wrong_p1(player1.turn)
-              // }
 
+            }
+          }
+          break
+          case 65:
+          if(e.keyCode == 65) {
+            if (product.rndSort[0] === product.price) {
+              frames = 999
+              player1.answer[player2.turn] = 'c'
+              player1.turn++
+              
+            }
+            if(product.rndSort[1] === product.price) {
+              frames = 999
+              participacion = false
+              console.log("lose")
+              player2.answer[player2.turn] = 'w'
+              player2.turn++
+              console.log(player2.turn + " < ");
+            }
+          }
+          break
+          case 68:
+          if(e.keyCode == 68) {
+            if (product.rndSort[1] === product.price) {
+              frames = 999
+              console.log("win")
+              player2.answer[player2.turn] = 'c'
+              player2.turn++
+              console.log(player.turn + " < ");
+            }
+            if(product.rndSort[0] === product.price) {
+              frames = 999
+              participacion = false
+              console.log("lose")
+              player2.answer[player2.turn] = 'w'
+              player2.turn++
+              console.log(player2.turn + " < ");
             }
           }
           break

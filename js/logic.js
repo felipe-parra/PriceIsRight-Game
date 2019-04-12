@@ -11,7 +11,6 @@ let player2 = new Player("Fny")
 
 class Decision{
   constructor(){
-    // this.decision = decision
     this.x      = 0
     this.y      = 0
     this.add    = 0
@@ -20,14 +19,14 @@ class Decision{
     this.wrong  = new Image()
     this.wrong.src = images.wrong
     this.wrong.onload = ()=>{
-      // this.draw_wrong_p1()
-      this.draw_wrong_p2()
+      this.draw_p1()
+      this.draw_p2()
     }
     this.correct  = new Image()
     this.correct.src = images.correct
     this.correct.onload = ()=>{
       this.draw_p1()
-      this.draw_correct_p2()
+      this.draw_p2()
     }
   }
   draw(turno,decision){
@@ -36,9 +35,7 @@ class Decision{
     ctx.fillStyle = "Black"
     ctx.fillText("Player 1",55,25,80)
     ctx.fillText("Player 2",55,265,80)
-    // ctx.drawImage(this.wrong, 80,275,this.limits[0],this.limits[1])
-    // ctx.drawImage(this.wrong, 80,345,this.limits[0],this.limits[1])
-    // ctx.drawImage(this.wrong, 80,415,this.limits[0],this.limits[1])
+
   }
   draw_p1(turno,decision){
     if (turno == 1 && decision == 'c') {
@@ -57,31 +54,21 @@ class Decision{
       ctx.drawImage(this.wrong, this.limits[0],this.pos[2],this.limits[0],this.limits[1])
     }
   }
-  draw_correct_p2(turno){
-    if(turno == 0 || turno == undefined){this.add = -150}
-    if (turno == 1) {
-      ctx.drawImage(this.correct, 80,this.pos[3],this.limits[0],this.limits[1])
+  draw_p2(turno,decision){
+    if (turno == 1 && decision == 'c') {
+      ctx.drawImage(this.correct, this.limits[0],this.pos[3],this.limits[0],this.limits[1])
+    }else if(turno == 1 && decision == 'w'){
+      ctx.drawImage(this.wrong, this.limits[0],this.pos[3],this.limits[0],this.limits[1])
     }
-    if (turno == 2){
-      ctx.drawImage(this.correct, 80,this.pos[4],this.limits[0],this.limits[1])
+    if (turno == 2 && decision == 'c') {
+      ctx.drawImage(this.correct, this.limits[0],this.pos[4],this.limits[0],this.limits[1])
+    } else if(turno == 2 && decision == 'w'){
+      ctx.drawImage(this.wrong, this.limits[0],this.pos[4],this.limits[0],this.limits[1])
     }
-    if (turno == 3){
-      ctx.drawImage(this.correct, 80,this.pos[5],this.limits[0],this.limits[1])
-    }
-  }
-  draw_wrong_p2(turno){
-    if(turno == 0 || turno == undefined){this.add = -150}
-    if (turno == 1) {
-      
-      ctx.drawImage(this.wrong, 80,this.pos[3],this.limits[0],this.limits[1])
-    }
-    if (turno == 2) {
-      
-      ctx.drawImage(this.wrong, 80,this.pos[4],this.limits[0],this.limits[1])
-    }
-    if (turno == 3) {
-      
-      ctx.drawImage(this.wrong, 80,this.pos[5],this.limits[0],this.limits[1])
+    if (turno == 3  && decision == 'c') {
+      ctx.drawImage(this.correct, this.limits[0],this.pos[5],this.limits[0],this.limits[1])
+    } else if(turno == 3 && decision == 'w'){
+      ctx.drawImage(this.wrong, this.limits[0],this.pos[5],this.limits[0],this.limits[1])
     }
   }
 }
